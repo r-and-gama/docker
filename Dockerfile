@@ -14,13 +14,17 @@ RUN apt update && apt upgrade -y
 RUN apt install -y r-base && R --version
 
 # Install GAMAR
+ADD ./gamarAutoInstall.R /tmp/gamarAutoInstall.R
+
+## Lib for devtools
+Run apt install -y \
+	libssl-dev \
+	libxml2-dev \
+	libcurl4-openssl-dev \
+	libssh2-1-dev r-cran-httpuv
 
 # Setup GAMAR
-
-
-# Clear build packages
-RUN apt purge -y \
-	gnupg
+RUN Rscript /tmp/gamarAutoInstall.R
 
 # Exit points
 # 
