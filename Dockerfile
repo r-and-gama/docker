@@ -13,21 +13,18 @@ RUN apt update && apt upgrade -y
 # Install R
 RUN apt install -y r-base && R --version
 
-# Install GAMAR
-ADD ./gamarAutoInstall.R /tmp/gamarAutoInstall.R
-
 ## Lib for devtools
 Run apt install -y \
 	libssl-dev \
 	libxml2-dev \
 	libcurl4-openssl-dev \
-	libssh2-1-dev r-cran-httpuv r-cran-httpuv
+	libssh2-1-dev r-cran-httpuv 
 
 RUN Rscript -e 'if (! "devtools" %in% row.names(installed.packages())) install.packages("devtools")' 
 
 ## Lib for gamar
 Run apt install -y \
-	libmagick++-dev #libgraphicsmagick1-dev
+	libmagick++-dev
 
 RUN Rscript -e 'if (! "gamar" %in% row.names(installed.packages())) devtools::install_github("r-and-gama/gamar")' 
 
