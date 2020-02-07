@@ -21,10 +21,22 @@ Run apt install -y \
 	libssl-dev \
 	libxml2-dev \
 	libcurl4-openssl-dev \
-	libssh2-1-dev r-cran-httpuv
+	libssh2-1-dev r-cran-httpuv r-cran-httpuv
+
+RUN Rscript -e 'if (! "devtools" %in% row.names(installed.packages())) install.packages("devtools")' 
+
+## Lib for gamar
+Run apt install -y \
+	libmagick++-dev #libgraphicsmagick1-dev
+
+RUN Rscript -e 'if (! "gamar" %in% row.names(installed.packages())) devtools::install_github("r-and-gama/gamar")' 
 
 # Setup GAMAR
-RUN Rscript /tmp/gamarAutoInstall.R
+## https://github.com/r-and-gama/gamar/issues/28
+RUN mkdir -p /usr/lib/gama/Contents/Eclipse/Configuration
+RUN ln -s /usr/lib/gama/configuration/config.ini /usr/lib/gama/Contents/Eclipse/Configuration/config.ini
+## Setup path
+RUN Rscript -e 'library(gamar); setup_gama("/usr/lib/gama")'
 
 # Exit points
 # 
